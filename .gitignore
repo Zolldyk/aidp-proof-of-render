@@ -1,0 +1,59 @@
+# BMAD Infrastructure (never commit)
+.bmad-core/
+.claude/
+.clinerules/
+.ignore/
+.trae/
+docs/
+prd/
+stories/
+architecture.md
+prd.md
+
+# Dependencies
+node_modules/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+venv/
+env/
+ENV/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Build outputs
+dist/
+build/
+*.egg-info/
+.eggs/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Storage and temporary files
+/tmp/
+/backend/app/storage/
+*.log
+
+# Testing
+.coverage
+htmlcov/
+.pytest_cache/
+coverage/
+
+# Misc
+*.bak
+*.tmp
