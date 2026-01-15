@@ -37,8 +37,6 @@ This project uses a modern full-stack architecture optimized for rapid developme
 - Vercel (frontend deployment)
 - GitHub Actions for CI/CD
 
-For complete tech stack details, see [`docs/architecture/tech-stack.md`](docs/architecture/tech-stack.md).
-
 ## Quick Start
 
 Get the project running in under 5 minutes:
@@ -101,7 +99,6 @@ docker-compose up --build
 aidp-proof-of-render/
 ├── frontend/           # React + TypeScript frontend
 ├── backend/            # FastAPI backend with Blender
-├── docs/               # Project documentation
 ├── test-assets/        # Sample GLTF files for testing
 ├── scripts/            # Utility scripts
 └── .github/workflows/  # CI/CD configuration
@@ -117,14 +114,6 @@ aidp-proof-of-render/
                             [Proof Generator]
 ```
 
-_Detailed architecture diagram coming soon_
-
-## Documentation
-
-- **Product Requirements**: [`docs/prd.md`](docs/prd.md)
-- **Architecture**: [`docs/architecture/`](docs/architecture/)
-- **API Specification**: [`docs/architecture/api-specification.md`](docs/architecture/api-specification.md)
-- **User Stories**: [`docs/stories/`](docs/stories/)
 
 ## Development Workflow
 
@@ -147,14 +136,3 @@ We welcome contributions! Please follow these guidelines:
 4. Run linting and tests before pushing
 5. Submit a pull request
 
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Contact
-
-For questions or support, please open an issue on GitHub.
-
----
-
-Built with ❤️ for the AIDP GPU Rendering Competition
