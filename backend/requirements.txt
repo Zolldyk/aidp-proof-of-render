@@ -9,8 +9,17 @@ httpx>=0.25.2
 # Image processing
 Pillow>=10.1.0
 
+# Memory profiling
+psutil>=5.9.0
+
 # GLTF file validation
 pygltflib>=1.16.1
+
+# YAML parsing for scene presets
+PyYAML>=6.0
+
+# Template rendering for Blender scripts
+Jinja2>=3.1.0
 
 # Job scheduling and cleanup
 APScheduler>=3.10.4

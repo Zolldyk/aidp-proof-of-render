@@ -1,0 +1,95 @@
+presets:
+  - name: studio
+    displayName: Studio
+    description: Neutral three-point lighting for professional renders
+    cameraPosition:
+      x: 7
+      y: -7
+      z: 5
+    cameraRotation:
+      x: 60
+      y: 0
+      z: 45
+    backgroundColor: "#f0f0f0"
+    lights:
+      - type: AREA
+        position:
+          x: 5
+          y: -5
+          z: 6
+        energy: 1000
+        color: "#ffffff"
+      - type: AREA
+        position:
+          x: -3
+          y: -3
+          z: 4
+        energy: 300
+        color: "#ffffff"
+      - type: AREA
+        position:
+          x: -5
+          y: 5
+          z: 5
+        energy: 500
+        color: "#ffffff"
+    samples: 128
+    colorTemperature: 6500
+    estimatedRenderTime: "15-30 seconds"
+    recommendedFor: "Product visualization, technical documentation"
+
+  - name: sunset
+    displayName: Sunset
+    description: Warm dramatic lighting with golden hour ambiance
+    cameraPosition:
+      x: 10
+      y: -5
+      z: 3
+    cameraRotation:
+      x: 75
+      y: 0
+      z: 30
+    backgroundColor: "#ff7e3e"
+    lights:
+      - type: SUN
+        rotation:
+          x: 15
+          y: 0
+          z: 120
+        energy: 2.5
+        color: "#ffaa66"
+    samples: 128
+    colorTemperature: 3500
+    estimatedRenderTime: "10-20 seconds"
+    recommendedFor: "Artistic renders, portfolio pieces"
+
+  - name: dramatic
+    displayName: Dramatic
+    description: High-contrast spotlight for cinematic renders
+    cameraPosition:
+      x: 5
+      y: -10
+      z: 2
+    cameraRotation:
+      x: 85
+      y: 0
+      z: 25
+    backgroundColor: "#1a1a1a"
+    lights:
+      - type: SPOT
+        position:
+          x: 0
+          y: 0
+          z: 10
+        rotation:
+          x: 0
+          y: 0
+          z: 0
+        energy: 5000
+        color: "#ffffff"
+        size: 0.5
+    samples: 128
+    colorTemperature: 4500
+    shadowsEnabled: true
+    estimatedRenderTime: "20-40 seconds"
+    recommendedFor: "Dramatic presentations, hero shots"

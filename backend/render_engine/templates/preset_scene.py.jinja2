@@ -1,0 +1,124 @@
+#!/usr/bin/env blender --python
+"""
+Blender scene generation script for preset-based rendering.
+Generated from template by preset_scene.py.jinja2
+"""
+
+import bpy
+import mathutils
+import math
+import sys
+
+# Clear default scene
+bpy.ops.object.select_all(action='SELECT')
+bpy.ops.object.delete()
+
+# Delete default camera and lights if they exist
+for obj in bpy.data.objects:
+    bpy.data.objects.remove(obj, do_unlink=True)
+
+# Import .gltf asset
+bpy.ops.import_scene.gltf(filepath="{{ asset_path }}")
+
+# Apply camera settings from preset
+bpy.ops.object.camera_add(
+    location=({{ preset.cameraPosition.x }}, {{ preset.cameraPosition.y }}, {{ preset.cameraPosition.z }})
+)
+camera = bpy.context.object
+camera.rotation_euler = mathutils.Euler((
+    math.radians({{ preset.cameraRotation.x }}),
+    math.radians({{ preset.cameraRotation.y }}),
+    math.radians({{ preset.cameraRotation.z }})
+), 'XYZ')
+bpy.context.scene.camera = camera
+
+# Apply lighting from preset
+{% for light in preset.lights %}
+{% if light.type == 'SUN' %}
+# Create SUN light (directional)
+bpy.ops.object.light_add(type='{{ light.type }}')
+light_obj = bpy.context.object
+light_data = light_obj.data
+light_data.energy = {{ light.energy }}
+{% if light.color %}
+light_data.color = {{ light.color | hex_to_rgb }}
+{% endif %}
+{% if light.rotation %}
+light_obj.rotation_euler = mathutils.Euler((
+    math.radians({{ light.rotation.x }}),
+    math.radians({{ light.rotation.y }}),
+    math.radians({{ light.rotation.z }})
+), 'XYZ')
+{% endif %}
+
+{% elif light.type == 'SPOT' %}
+# Create SPOT light
+bpy.ops.object.light_add(
+    type='{{ light.type }}',
+    location=({{ light.position.x }}, {{ light.position.y }}, {{ light.position.z }})
+)
+light_obj = bpy.context.object
+light_data = light_obj.data
+light_data.energy = {{ light.energy }}
+{% if light.color %}
+light_data.color = {{ light.color | hex_to_rgb }}
+{% endif %}
+{% if light.size %}
+light_data.spot_size = {{ light.size }}
+{% endif %}
+{% if light.rotation %}
+light_obj.rotation_euler = mathutils.Euler((
+    math.radians({{ light.rotation.x }}),
+    math.radians({{ light.rotation.y }}),
+    math.radians({{ light.rotation.z }})
+), 'XYZ')
+{% endif %}
+
+{% else %}
+# Create {{ light.type }} light (POINT, AREA, etc.)
+bpy.ops.object.light_add(
+    type='{{ light.type }}',
+    location=({{ light.position.x }}, {{ light.position.y }}, {{ light.position.z }})
+)
+light_obj = bpy.context.object
+light_data = light_obj.data
+light_data.energy = {{ light.energy }}
+{% if light.color %}
+light_data.color = {{ light.color | hex_to_rgb }}
+{% endif %}
+
+{% endif %}
+{% endfor %}
+
+# Apply background color
+world = bpy.context.scene.world
+if not world:
+    world = bpy.data.worlds.new("World")
+    bpy.context.scene.world = world
+
+world.use_nodes = True
+bg_node = world.node_tree.nodes.get("Background")
+if not bg_node:
+    bg_node = world.node_tree.nodes.new(type='ShaderNodeBackground')
+
+bg_node.inputs[0].default_value = {{ preset.backgroundColor | hex_to_rgb | rgb_to_rgba }}
+
+# Configure render settings
+bpy.context.scene.render.engine = 'CYCLES'
+bpy.context.scene.cycles.device = 'GPU'
+
+# Set resolution
+bpy.context.scene.render.resolution_x = 1024
+bpy.context.scene.render.resolution_y = 1024
+
+# Set samples
+bpy.context.scene.cycles.samples = {{ preset.samples }}
+
+# Set output format
+bpy.context.scene.render.image_settings.file_format = 'PNG'
+bpy.context.scene.render.filepath = "{{ output_path }}"
+
+# Render
+bpy.ops.render.render(write_still=True)
+
+print("Render completed successfully: {{ output_path }}")

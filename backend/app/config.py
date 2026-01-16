@@ -35,6 +35,12 @@ class Settings(BaseSettings):
         description="AIDP network identifier",
     )
 
+    # Render Provider Configuration
+    USE_MOCK_AIDP: bool = Field(
+        default=True,
+        description="Use MockAIDPProvider (local Blender) instead of real AIDP API",
+    )
+
     # Application Configuration
     ALLOWED_ORIGINS: List[str] = Field(
         default=["http://localhost:5173", "https://proofrender.vercel.app"],
