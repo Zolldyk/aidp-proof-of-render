@@ -5,6 +5,7 @@ from .render_request import RenderRequest
 from .render_response import RenderResponse
 from .status_response import StatusResponse
 from .download_response import DownloadErrorResponse
+from .proof_data import ProofData, ProofMetadata
 
 __all__ = [
     "UploadResponse",
@@ -12,4 +13,6 @@ __all__ = [
     "RenderResponse",
     "StatusResponse",
     "DownloadErrorResponse",
+    "ProofData",
+    "ProofMetadata",
 ]
