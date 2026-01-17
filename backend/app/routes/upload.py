@@ -26,15 +26,39 @@ storage = FileStorageManager()
 @router.post(
     "/upload",
     response_model=UploadResponse,
-    summary="Upload 3D asset for rendering",
+    summary="Upload 3D Asset",
     description="""
-    Accepts .gltf file upload (max 10MB), validates format, generates unique job ID,
-    and stores asset in temporary storage. Returns job ID for subsequent render submission.
+Upload a .gltf 3D asset for rendering.
 
-    **Rate Limit:** 10 uploads per hour per IP address
-    **Max File Size:** 10MB
-    **Supported Formats:** .gltf (JSON format only, not GLB binary)
-    """,
+**Workflow:** Upload asset → Submit render → Poll status → Download result
+
+**Constraints:**
+- **Max File Size:** 10MB
+- **Rate Limit:** 10 uploads per hour per IP
+- **Supported Format:** .gltf (JSON format only, not GLB binary)
+
+**Response:** Returns a unique `jobId` to use with `/api/render` endpoint.
+""",
+    responses={
+        200: {
+            "description": "Upload successful",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "jobId": "550e8400-e29b-41d4-a716-446655440000",
+                        "message": "Upload successful",
+                        "assetFilename": "model.gltf",
+                        "assetSize": 15234,
+                        "nextStep": "/api/render",
+                    }
+                }
+            },
+        },
+        400: {"description": "Invalid file format or empty file"},
+        413: {"description": "File too large (max 10MB)"},
+        429: {"description": "Rate limit exceeded"},
+        500: {"description": "Server error"},
+    },
 )
 async def upload_asset(
     file: UploadFile = File(...),

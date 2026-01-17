@@ -5,6 +5,21 @@
 
 A decentralized GPU rendering service with cryptographic proof of work, built for the AIDP network.
 
+## Project Status
+
+### Epic 1: Foundation & Core Rendering Pipeline ✅ COMPLETE
+- [x] Story 1.1: Project Repository Setup
+- [x] Story 1.2: AIDP Integration Research
+- [x] Story 1.3: Blender Headless Rendering POC
+- [x] Story 1.4: Scene Preset System
+- [x] Story 1.5: File Upload Endpoint
+- [x] Story 1.6: Render Job Submission (Local Fallback)
+- [x] Story 1.7: Pipeline Integration & Testing
+
+### Epic 2: Proof Generation & Verification (Planned)
+### Epic 3: Frontend Implementation (Planned)
+### Epic 4: Gallery & Polish (Planned)
+
 ## About
 
 AIDP Proof of Render enables users to upload 3D models (GLTF format), render them using cloud GPU infrastructure via the AIDP (AI Decentralized Processing) network, and receive cryptographic proof that the rendering was completed. The system provides:
@@ -84,6 +99,38 @@ uvicorn app.main:app --reload
 The backend will be available at `http://localhost:8000`
 - API documentation: `http://localhost:8000/docs`
 - Alternative docs: `http://localhost:8000/redoc`
+
+## API Endpoints
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/upload` | POST | Upload .gltf asset (max 10MB) |
+| `/api/render` | POST | Submit render job with preset |
+| `/api/status/{job_id}` | GET | Check job status |
+| `/api/download/{job_id}` | GET | Download rendered PNG |
+| `/api/presets` | GET | List available presets |
+| `/health` | GET | Health check |
+
+### Example curl Commands
+
+```bash
+# 1. Upload a .gltf asset
+curl -X POST http://localhost:8000/api/upload \
+  -F "file=@model.gltf"
+
+# 2. Submit render job (use jobId from step 1)
+curl -X POST http://localhost:8000/api/render \
+  -H "Content-Type: application/json" \
+  -d '{"jobId": "YOUR_JOB_ID", "preset": "studio"}'
+
+# 3. Poll status until complete
+curl http://localhost:8000/api/status/YOUR_JOB_ID
+
+# 4. Download rendered image
+curl -o render.png http://localhost:8000/api/download/YOUR_JOB_ID
+
+# Available presets: studio, sunset, dramatic
+```
 
 ### Docker Setup (Alternative)
 
